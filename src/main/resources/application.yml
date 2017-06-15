@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: twdMain
+  
+  messages:
+    encoding: UTF-8
+      
+# config for service
+services:
+  redis: 
+    name: Redis-ma
+    
+  logstash:
+    name: logstash-drain
+    
+server: 
+  port: ${PORT}
+  
+eureka:  
+  instance:    
+    prefer-ip-address: true    
+    ip-address: ${CF_INSTANCE_IP}    
+    non-secure-port: ${CF_INSTANCE_PORT}
+    instance-id: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}    
+    lease-renewal-interval-in-seconds: 15  
+  client:    
+    region: default    
+    fetch-registry: true    
+    registry-fetch-interval-seconds: 30    
+    register-with-eureka: true    
+    service-url:      
+      defaultZone: ${vcap.services.DiscoveryService-i5.credentials.uri}/eureka/
+      
+debug: true
+logging:
+  level:
+    org.springframework.web: ERROR
+    kr.co.tworld: DEBUG
+  pattern:
+    console: ${spring.application.name} %d{yyyy:MM:dd} %-5level --- [%thread] %logger{35} / %msg %n
+  
+    
+          
+
